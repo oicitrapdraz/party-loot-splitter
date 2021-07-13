@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root 'party_loot_splitter#calculator'
+
+  post 'party_loot_splitter/perform_split'
+  get 'party_loot_splitter/result'
 end

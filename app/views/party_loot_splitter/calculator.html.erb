@@ -1,0 +1,5 @@
+<%= form_with url: party_loot_splitter_perform_split_path, method: :post do |form| %>
+  <%= form.label :party_hunt_log %>
+  <%= form.text_area :party_hunt_log %>
+  <%= form.submit 'Submit' %>
+<% end %>
