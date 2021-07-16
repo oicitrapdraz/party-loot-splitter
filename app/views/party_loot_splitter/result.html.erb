@@ -1,1 +1,8 @@
-<%=  @data %>
+
+<h1 class="title">Loot Type: <%= @data[:loot_type] %> - Duration: <%= @data[:duration] %></h1>
+
+  <ul>
+  <% @data[:transfers].each do |transfer| %>
+  <li><%= transfer[:from] %> should transfer <%= transfer[:amount] %> to <%= transfer[:to] %>.</li>
+  <% end %>
+  </ul>

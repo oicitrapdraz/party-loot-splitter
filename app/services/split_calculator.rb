@@ -2,7 +2,7 @@ class SplitCalculator
   attr_reader :split_logic, :party_hunt_log, :number_of_players, :duration, :loot_type, :balance
 
   SPLIT_LOGIC = [{ message: 'Normal Split (equalize balances)', key: :normal },
-                 { message: 'Weighted by Damage (prioritize those who did the most damage)', key: :damage }].freeze
+                 { message: 'Weighted by Damage (distribute balance according to dealt damage)', key: :damage }].freeze
 
   def initialize(split_logic, party_hunt_log)
     @split_logic = split_logic
@@ -27,9 +27,9 @@ class SplitCalculator
   def set_basic_data(lines)
     @duration = lines.second.gsub('Session ', '')
 
-    @loot_type = lines[2]
+    @loot_type = lines[2].gsub(/Loot Type:? /i, '')
 
-    @balance = lines[5].gsub('Balance ', '').tr(',', '').to_i
+    @balance = lines[5].gsub(/Balance:? /i, '').tr(',', '').to_i
   end
 
   def parse_players_from_input(lines)
@@ -43,8 +43,8 @@ class SplitCalculator
       player = {}
 
       player[:name] = raw_player_data.first.gsub(' (Leader)', '')
-      player[:balance] = raw_player_data.fourth.gsub(/Balance:? /, '').tr(',', '').to_i
-      player[:damage] = raw_player_data.fifth.gsub(/Damage:? /, '').tr(',', '').to_i
+      player[:balance] = raw_player_data.fourth.gsub(/Balance:? /i, '').tr(',', '').to_i
+      player[:damage] = raw_player_data.fifth.gsub(/Damage:? /i, '').tr(',', '').to_i
 
       players.append player
     end
@@ -60,7 +60,7 @@ class SplitCalculator
                   elsif split_logic == 'damage'
                     total_damage = players.map { |player| player[:damage] }.sum
 
-                    players.map { |player| (player[:damage] / total_damage.to_f) * balance }
+                    players.map { |player| ((player[:damage] / total_damage.to_f) * balance).to_i }
                   end
 
     players.each_with_index do |first_player, first_index|
