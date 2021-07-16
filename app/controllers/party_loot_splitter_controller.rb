@@ -1,7 +1,9 @@
 class PartyLootSplitterController < ApplicationController
-  def calculator; end
+  def calculator
+    @split_options = SplitCalculator::SPLIT_LOGIC.map { |element| [element[:message], element[:key]] }
+  end
 
   def result
-    @transfers = SplitCalculator.new(params[:party_hunt_log]).obtain_transfers
+    @data = SplitCalculator.new(params[:split_logic], params[:party_hunt_log]).calculate
   end
 end

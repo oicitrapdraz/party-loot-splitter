@@ -1,5 +1,31 @@
 <%= form_with url: party_loot_splitter_result_path, method: :post do |form| %>
-  <%= form.label :party_hunt_log %>
-  <%= form.text_area :party_hunt_log %>
-  <%= form.submit 'Submit' %>
+  <div class='field-label'>
+    <%= form.label :party_hunt_log, 'Input Tibia’s Party Hunt Analyser' %>
+  </div>
+
+  <br />
+
+  <div class='field-body'>
+    <div class='field'>
+      <div class='select is-primary'>
+        <%= select_tag(:split_logic, options_for_select(@split_options)) %>
+      </div>
+    </div>
+  </div>
+
+  <br />
+
+  <div class='field-body'>
+    <div class='field'>
+      <div class='control'>
+        <%= form.text_area :party_hunt_log, class: 'textarea', rows: 15 %>
+      </div>
+    </div>
+  </div>
+
+  <br />
+
+  <div class='control'>
+    <%= form.submit 'Submit', class: 'button is-primary' %>
+  </div>
 <% end %>
