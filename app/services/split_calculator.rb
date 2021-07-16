@@ -1,5 +1,5 @@
 class SplitCalculator
-  attr_reader :split_logic, :party_hunt_log, :number_of_players, :duration, :loot_type, :balance
+  attr_reader :split_logic, :party_hunt_log, :number_of_players, :duration, :loot_type, :balance, :players
 
   SPLIT_LOGIC = [{ message: 'Normal Split (equalize balances)', key: :normal },
                  { message: 'Weighted by Damage (distribute balance according to dealt damage)', key: :damage }].freeze
@@ -7,17 +7,15 @@ class SplitCalculator
   def initialize(split_logic, party_hunt_log)
     @split_logic = split_logic
     @party_hunt_log = party_hunt_log
-  end
 
-  def calculate
     lines = party_hunt_log.split(/\r?\n\t?/)
 
     set_basic_data(lines)
 
-    players = parse_players_from_input(lines)
+    @players = parse_players_from_input(lines)
+  end
 
-    balance_per_player = (balance / players.count.to_f).floor
-
+  def calculate
     { number_of_players: number_of_players, duration: duration, loot_type: loot_type, balance: balance,
       transfers: match_balances(balance, players) }
   end
@@ -60,7 +58,11 @@ class SplitCalculator
                   elsif split_logic == 'damage'
                     total_damage = players.map { |player| player[:damage] }.sum
 
-                    players.map { |player| ((player[:damage] / total_damage.to_f) * balance).to_i }
+                    if balance.positive?
+                      players.map { |player| ((player[:damage] / total_damage.to_f) * balance).to_i }
+                    elsif balance.zero?
+                      [0] * players.count
+                    end
                   end
 
     players.each_with_index do |first_player, first_index|
