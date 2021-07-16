@@ -1,0 +1,24 @@
+<div class='content'>
+  <% if @data.has_key? :errors %>
+  <h1 class='title'>Error</h1>
+
+  <p>The following error/s occurred:</p>
+
+  <% @data[:errors].each do |error| %>
+  <div class='notification is-danger'>
+    <button class='delete'></button>
+    <%= error %>
+  </div>
+  <% end %>
+  <% else %>
+  <h1 class='title'>Loot Type: <%= @data[:loot_type] %> - Duration: <%= @data[:duration] %></h1>
+
+  <p>Copy bold part and say it to a Bank NPC to quickly make the transfer.</p>
+
+  <ul>
+    <% @data[:transfers].each do |transfer| %>
+    <li><%= transfer[:from] %> should <strong>transfer <%= transfer[:amount] %> to <%= transfer[:to] %></strong>.</li>
+    <% end %>
+  </ul>
+  <% end %>
+</div>

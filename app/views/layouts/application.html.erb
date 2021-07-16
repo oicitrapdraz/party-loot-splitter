@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PartyLootSplitter</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Tibia - Party Loot Splitter</title>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <br />
+    <div class='container'>
+      <div class='columns'>
+        <div class='column'></div>
+        <div class='column is-four-fifths'>
+          <div class='box'>
+            <div class='level-item has-text-centered'>
+              <%= image_tag('header.png') %>
+            </div>
+
+            <br />
+
+            <%= yield %>
+          </div>
+        </div>
+        <div class='column'></div>
+      </div>
+    </div>
   </body>
 </html>
